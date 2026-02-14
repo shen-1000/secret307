@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>307 Secret</title>
+
+<style>
+body {
+    background-color: black;
+    color: white;
+    font-family: monospace;
+    text-align: center;
+    padding-top: 120px;
+    transition: 0.5s;
+}
+
+input {
+    padding: 10px;
+    font-size: 18px;
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    margin-left: 10px;
+    background-color: white;
+    border: none;
+}
+
+#messageBox {
+    margin-top: 20px;
+    height: 30px;
+}
+
+#hidden {
+    display: none;
+    margin-top: 40px;
+    opacity: 0;
+    transition: opacity 2s;
+}
+
+#hidden img {
+    width: 60%;
+    max-width: 600px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="text"></h1>
+
+<input type="password" id="password">
+<button onclick="checkPassword()">解鎖</button>
+
+<div id="messageBox"></div>
+
+<div id="hidden">
+    <p>歡迎回來。</p>
+    <p>有些畫面，不會被時間刪除。</p>
+    <img src="photo.jpg">
+</div>
+
+<script>
+var message = "你找到了一個野生的QR code。如果你在畢冊的其他地方找到了其他線索，輸入它。";
+var i = 0;
+
+function typeWriter() {
+    if (i < message.length) {
+        document.getElementById("text").innerHTML += message.charAt(i);
+        i++;
+        setTimeout(typeWriter, 50);
+    }
+}
+typeWriter();
+
+var attempts = 0;
+
+function checkPassword() {
+    var password = document.getElementById("password").value;
+    var box = document.getElementById("messageBox");
+
+    if(password === "mavis") {
+        box.innerHTML = "恭喜你。";
+        box.style.color = "lightgreen";
+
+        var hidden = document.getElementById("hidden");
+        hidden.style.display = "block";
+        setTimeout(function() {
+            hidden.style.opacity = 1;
+        }, 100);
+
+    } else {
+        attempts++;
+
+        if(attempts === 1) {
+            box.innerHTML = "不對喔。再想想。";
+        }
+        else if(attempts === 2) {
+            box.innerHTML = "你真的有好好看畢冊嗎？";
+        }
+        else if(attempts === 3) {
+            box.innerHTML = "會不會太弱了，提示：猜猜畢編生日。";
+        }
+        else if(attempts >= 4) {
+            box.innerHTML = "好啦，其實它是一個名字。";
+        }
+
+        box.style.color = "red";
+    }
+}
+</script>
+
+</body>
+</html>
